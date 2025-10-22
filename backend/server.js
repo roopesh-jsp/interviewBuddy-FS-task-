@@ -1,8 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import sequelize from "./congif/db.js";
+import sequelize from "./config/db.js";
 import userRouter from "./routes/user.routes.js";
+import orgRouter from "./routes/organization.routes.js";
 
 dotenv.config();
 const app = express();
@@ -12,8 +13,9 @@ app.use(express.json());
 app.get("/", (req, res) => res.send("Backend is running! 🚀"));
 
 app.use("/user", userRouter);
+app.use("/org", orgRouter);
 
-sequelize.sync().then(() => {
+sequelize.sync({ alter: true }).then(() => {
   console.log("✅ Database synced");
   app.listen(5000, () => console.log("🚀 Server running on port 5000"));
 });

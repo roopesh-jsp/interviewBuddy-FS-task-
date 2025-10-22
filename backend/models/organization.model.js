@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
-import User from "./User.js"; // Import after creating User model
+import User from "./users.model.js";
 
 const Organization = sequelize.define(
   "Organization",
@@ -21,7 +21,8 @@ const Organization = sequelize.define(
     // Contact details
     adminName: {
       type: DataTypes.STRING,
-      allowNull: false,
+      // allowNull: false,
+      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
@@ -33,9 +34,9 @@ const Organization = sequelize.define(
       allowNull: true,
       validate: { isEmail: true },
     },
-    phone: {
+    contact: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
     alternativePhone: {
       type: DataTypes.STRING,
