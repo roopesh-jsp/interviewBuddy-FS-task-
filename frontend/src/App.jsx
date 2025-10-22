@@ -1,13 +1,22 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./pages/Home";
+import Org from "./pages/Org";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const createRouter = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      path: "/:id",
+      element: <Org />,
+    },
+  ]);
 
   return (
     <>
-      <div className="text-3xl text-red-700">hai</div>
+      <RouterProvider router={createRouter} />
     </>
   );
 }
