@@ -12,10 +12,10 @@ app.use(express.json());
 
 app.get("/", (req, res) => res.send("Backend is running! 🚀"));
 
-app.use("/user", userRouter);
+app.use("/users", userRouter);
 app.use("/org", orgRouter);
 
-sequelize.sync({ alter: true }).then(() => {
+sequelize.sync().then(() => {
   console.log("✅ Database synced");
   app.listen(5000, () => console.log("🚀 Server running on port 5000"));
 });

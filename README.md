@@ -258,3 +258,151 @@ All endpoints are relative to the base URL (e.g., `http://localhost:5000`). The 
     "message": "Organization not found"
   }
   ```
+
+<br/>
+
+<!-- --- -->
+
+<br/>
+
+# User API Endpoints
+
+All endpoints are relative to the base URL (e.g., `http://localhost:3000`). The router is mounted on `/users`.
+
+### 1. Create User
+
+- **Endpoint:** `POST /users`
+- **Description:** Creates a new user and associates them with an organization.
+- **Request Body (JSON):**
+  - `name` (String, **Required**)
+  - `organizationId` (Integer, **Required**)
+  - `role` (String, Optional) - Must be `"admin"` or `"coordinator"`. Defaults to `"coordinator"`.
+  ```json
+  {
+    "name": "Alex Smith",
+    "role": "admin",
+    "organizationId": 1
+  }
+  ```
+- **Success Response (201 Created):**
+  ```json
+  {
+    "message": "User created successfully",
+    "user": {
+      "id": 12,
+      "name": "Alex Smith",
+      "role": "admin",
+      "organizationId": 1,
+      "updatedAt": "2025-10-22T12:30:00.000Z",
+      "createdAt": "2025-10-22T12:30:00.000Z"
+    }
+  }
+  ```
+- **Error Responses:**
+  - **400 Bad Request:** If `name` or `organizationId` is missing.
+    ```json
+    {
+      "message": "Name and organizationId are required"
+    }
+    ```
+  - **404 Not Found:** If the specified `organizationId` does not exist.
+    ```json
+    {
+      "message": "Organization not found"
+    }
+    ```
+
+### 2. Get Users by Organization
+
+- **Endpoint:** `GET /users/org/:organizationId`
+- **Description:** Retrieves a list of all users belonging to a specific organization.
+- **Success Response (200 OK):**
+  ```json
+  {
+    "message": "Users fetched successfully",
+    "users": [
+      {
+        "id": 12,
+        "name": "Alex Smith",
+        "role": "admin",
+        "organizationId": 1,
+        "createdAt": "2025-10-22T12:30:00.000Z",
+        "updatedAt": "2025-10-22T12:30:00.000Z"
+      },
+      {
+        "id": 13,
+        "name": "Sam Lee",
+        "role": "coordinator",
+        "organizationId": 1,
+        "createdAt": "2025-10-22T12:31:00.000Z",
+        "updatedAt": "2025-10-22T12:31:00.000Z"
+      }
+    ]
+  }
+  ```
+- **Error Response (404 Not Found):**
+  - If the specified `organizationId` does not exist.
+    ```json
+    {
+      "message": "Organization not found"
+    }
+    ```
+
+### 3. Update User
+
+- **Endpoint:** `PATCH /users/:id`
+- **Description:** Updates a user's details. All fields are optional.
+- **Request Body (JSON):**
+  - `name` (String, Optional)
+  - `role` (String, Optional)
+  - `organizationId` (Integer, Optional) - Can be used to move a user to a new organization. [but not here !].
+  ```json
+  {
+    "name": "Alex J. Smith",
+    "role": "coordinator"
+  }
+  ```
+- **Success Response (200 OK):**
+  ```json
+  {
+    "message": "User updated successfully",
+    "user": {
+      "id": 12,
+      "name": "Alex J. Smith",
+      "role": "coordinator",
+      "organizationId": 1,
+      "createdAt": "2025-10-22T12:30:00.000Z",
+      "updatedAt": "2025-10-22T12:35:00.000Z"
+    }
+  }
+  ```
+- **Error Responses:**
+  - **404 Not Found:** If the user with `:id` does not exist.
+    ```json
+    {
+      "message": "User not found"
+    }
+    ```
+  - **404 Not Found:** If a new `organizationId` is provided but does not exist.
+    ```json
+    {
+      "message": "Organization not found"
+    }
+    ```
+
+### 4. Delete User
+
+- **Endpoint:** `DELETE /users/:id`
+- **Description:** Deletes a user by their unique ID.
+- **Success Response (200 OK):**
+  ```json
+  {
+    "message": "User deleted successfully"
+  }
+  ```
+- **Error Response (404 Not Found):**
+  ```json
+  {
+    "message": "User not found"
+  }
+  ```
