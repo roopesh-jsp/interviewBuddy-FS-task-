@@ -1,15 +1,39 @@
 import { Plus, Eye, Trash2, Filter } from "lucide-react";
 import { useState } from "react";
+import axios from "../config/axios";
+import { useNavigate } from "react-router-dom";
 
-export default function B2BOrganizationsTable({ addOrd, organizations }) {
+export default function B2BOrganizationsTable({
+  addOrd,
+  organizations,
+  setOrganizations,
+}) {
   const [hoveredRow, setHoveredRow] = useState(null);
+  const [deleting, setDeleting] = useState(null);
+  const navigate = useNavigate();
 
   const handleView = (org) => {
-    console.log("View organization:", org);
+    navigate(`/${org.id}`);
   };
 
-  const handleDelete = (org) => {
-    console.log("Delete organization:", org);
+  const handleDelete = async (org) => {
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete ${org.name}?`
+    );
+    if (!confirmDelete) return;
+
+    try {
+      setDeleting(org.id);
+      await axios.delete(`/org/${org.id}`);
+
+      // Remove deleted org from list
+      setOrganizations((prev) => prev.filter((item) => item.id !== org.id));
+    } catch (error) {
+      console.error("Error deleting organization:", error);
+      alert("Failed to delete organization. Please try again.");
+    } finally {
+      setDeleting(null);
+    }
   };
 
   return (
@@ -107,14 +131,25 @@ export default function B2BOrganizationsTable({ addOrd, organizations }) {
               </button>
               <button
                 onClick={() => handleDelete(org)}
+                disabled={deleting === org.id}
                 className="p-1.5 hover:bg-gray-200 rounded transition"
                 title="Delete"
               >
-                <Trash2 className="w-5 h-5 text-gray-600" />
+                {deleting === org.id ? (
+                  <span className="text-sm text-gray-500">...</span>
+                ) : (
+                  <Trash2 className="w-5 h-5 text-gray-600" />
+                )}
               </button>
             </div>
           </div>
         ))}
+
+        {organizations.length === 0 && (
+          <div className="text-center py-6 text-gray-500 text-sm">
+            No organizations found.
+          </div>
+        )}
       </div>
     </div>
   );
