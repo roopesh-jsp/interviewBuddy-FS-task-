@@ -259,6 +259,76 @@ All endpoints are relative to the base URL (e.g., `http://localhost:5000`). The 
   }
   ```
 
+### 6. Update Organization Status
+
+- **Endpoint:** `PATCH /org/status/:id`
+- **Description:** Updates the status of a specific organization by its ID.
+- **Request Body (JSON):**
+  - Must provide a `status` field.
+  - Allowed values are: `"Active"`, `"Inactive"`, or `"Blocked"`.
+  ```json
+  {
+    "status": "Inactive"
+  }
+  ```
+- **Success Response (200 OK):**
+  ```json
+  {
+    "message": "✅ Status updated successfully",
+    "org": {
+      "id": 1,
+      "status": "Inactive"
+    }
+  }
+  ```
+- **Error Responses:**
+  - **404 Not Found:** If the organization with `:id` does not exist.
+    ```json
+    {
+      "error": "Organization not found"
+    }
+    ```
+  - **400 Bad Request:** If the `status` value is missing or not one of the allowed values.
+    ```json
+    {
+      "error": "Invalid status value"
+    }
+    ```
+
+### 7. Update Organization Image
+
+- **Endpoint:** `PATCH /org/image/:id`
+- **Description:** Uploads or updates the image for a specific organization. This endpoint expects `multipart/form-data`.
+- **Request Body:**
+  - **Type:** `multipart/form-data`
+  - **Field:** The request must include a file attached to a field. (e.g., a field named `image`).
+- **Success Response (200 OK):**
+  ```json
+  {
+    "message": "✅ Image uploaded successfully",
+    "imageUrl": "[https://ik.imagekit.io/your-id/org-images/1_1678886400000_logo.png](https://ik.imagekit.io/your-id/org-images/1_1678886400000_logo.png)"
+  }
+  ```
+- **Error Responses:**
+  - **400 Bad Request:** If no file is attached to the request.
+    ```json
+    {
+      "error": "No image uploaded"
+    }
+    ```
+  - **404 Not Found:** If the organization with `:id` does not exist.
+    ```json
+    {
+      "error": "Organization not found"
+    }
+    ```
+  - **500 Internal Server Error:** If the file upload to the external service (ImageKit) fails.
+    ```json
+    {
+      "error": "Failed to upload image"
+    }
+    ```
+
 <br/>
 
 <!-- --- -->

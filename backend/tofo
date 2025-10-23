@@ -1,2 +1,0 @@
-change status enpoint  PATCH /org/status/${id}
-update image endpoint PATCH /org/image/${id}

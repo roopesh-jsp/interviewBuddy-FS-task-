@@ -1,3 +1,4 @@
+import imagekit from "../config/imagekit.js";
 import Organization from "../models/organization.model.js";
 export const createOrganization = async (req, res) => {
   try {
@@ -112,5 +113,71 @@ export const deleteOrganization = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updateImage = async (req, res) => {
+  try {
+    const orgId = req.params.id;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ error: "No image uploaded" });
+    }
+    // Upload image to ImageKit
+    const uploadResponse = await imagekit.upload({
+      file: file.buffer, // file buffer from multer
+      fileName: `${orgId}_${Date.now()}_${file.originalname}`,
+      folder: "/org-images",
+    });
+
+    // Update org record in DB
+    const org = await Organization.findByPk(orgId);
+    if (!org) return res.status(404).json({ error: "Organization not found" });
+
+    org.image = uploadResponse.url;
+    await org.save();
+
+    res.json({
+      message: "✅ Image uploaded successfully",
+      imageUrl: uploadResponse.url,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to upload image" });
+  }
+};
+
+export const updateOrgStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    // Validate status value
+    const validStatuses = ["Active", "Inactive", "Blocked"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ error: "Invalid status value" });
+    }
+
+    // Find org by ID
+    const org = await Organization.findByPk(id);
+    if (!org) {
+      return res.status(404).json({ error: "Organization not found" });
+    }
+
+    // Update status
+    org.status = status;
+    await org.save();
+
+    res.json({
+      message: "✅ Status updated successfully",
+      org: {
+        id: org.id,
+        status: org.status,
+      },
+    });
+  } catch (err) {
+    console.error("Error updating status:", err);
+    res.status(500).json({ error: "Failed to update status" });
   }
 };

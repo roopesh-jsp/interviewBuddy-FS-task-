@@ -65,7 +65,10 @@ const Organization = sequelize.define(
       allowNull: true,
       validate: { isUrl: true },
     },
-
+    image: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     // Status
     status: {
       type: DataTypes.ENUM("Active", "Inactive", "Blocked"),
