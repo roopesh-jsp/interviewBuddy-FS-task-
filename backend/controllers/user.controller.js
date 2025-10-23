@@ -33,6 +33,7 @@ export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, role, organizationId } = req.body;
+    console.log(role);
 
     const user = await User.findByPk(id);
     if (!user) return res.status(404).json({ message: "User not found" });

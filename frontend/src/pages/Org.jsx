@@ -358,7 +358,7 @@ const OrganizationProfile = () => {
               />
             )}
 
-            {activeTab === "users" && <UserTab />}
+            {activeTab === "users" && <UserTab ordId={id} />}
           </div>
         </div>
       </div>
