@@ -340,7 +340,7 @@ const OrganizationProfile = () => {
 
           {/* Tabs */}
           <div className=" ">
-            <div className=" mb-5  ">
+            <div className=" mb-7  ">
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setActiveTab("basic")}

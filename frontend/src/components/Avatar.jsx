@@ -77,43 +77,84 @@ const Avatar = ({ organization, onImageUpdate }) => {
             onClick={() => setShowModal(true)}
             className="absolute inset-0 bg-black/40 flex items-center justify-center transition-all"
           >
-            <Pencil className="w-8 h-8 text-white" />
+            <div className="w-11 h-11 rounded-md bg-[#F0EBFF] flex items-center justify-center ">
+              <Pencil className="w-5 h-5 text-secondary" />
+            </div>
           </div>
         )}
       </div>
 
       {/* Modal */}
       {isEditable && showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-80 shadow-lg">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800">
-              Update Organization Image
-            </h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="relative bg-white rounded-2xl w-full max-w-md shadow-2xl border border-gray-100 animate-fadeIn">
+            {/* --- Body --- */}
+            <div className="px-6 py-5">
+              <label className="block text-sm font-medium text-gray-600 mb-3">
+                Choose an image
+              </label>
 
-            <input
-              type="file"
-              accept="image/*"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              className="block w-full text-sm text-gray-600 mb-4"
-            />
-
-            {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="w-full h-40 object-cover rounded-md mb-4"
+              {/* Hidden native input */}
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                id="org-image-upload"
               />
-            )}
 
-            <div className="flex justify-end gap-3">
+              {/* Custom styled button */}
+              <label
+                htmlFor="org-image-upload"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gray-50 text-gray-700 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition font-medium"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M3 12l4.5-4.5M3 12l4.5 4.5M3 12h18"
+                  />
+                </svg>
+                <span>Choose a file</span>
+              </label>
+
+              {/* Optional filename display */}
+              {selectedFile && (
+                <p className="text-sm text-gray-600 mt-2 truncate">
+                  Selected:{" "}
+                  <span className="font-medium">{selectedFile.name}</span>
+                </p>
+              )}
+
+              {/* Preview */}
+              {preview && (
+                <div className="mt-5">
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="w-full h-48 object-cover rounded-lg border border-gray-200 shadow-sm"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* --- Footer --- */}
+            <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
               <button
                 onClick={() => {
                   setShowModal(false);
                   setSelectedFile(null);
                   setPreview(null);
                 }}
-                className="px-4 py-2 bg-gray-200 rounded-md text-gray-800 hover:bg-gray-300"
+                className="px-4 py-2 rounded-lg text-gray-700 bg-white border border-gray-200 hover:bg-gray-100 transition font-medium"
               >
                 Cancel
               </button>
@@ -121,7 +162,7 @@ const Avatar = ({ organization, onImageUpdate }) => {
               <button
                 onClick={handleUpload}
                 disabled={!selectedFile || isUploading}
-                className={`px-4 py-2 rounded-md text-white ${
+                className={`px-4 py-2 rounded-lg font-medium text-white transition ${
                   isUploading
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700"

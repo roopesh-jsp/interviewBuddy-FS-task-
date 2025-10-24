@@ -143,7 +143,7 @@ const Home = () => {
         loading={submitting}
       >
         <form className="w-full">
-          <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-4 mb-4">
             {/* Name of the organization */}
             <div>
               <label
@@ -203,7 +203,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
             {/* Organization mail */}
             <div>
               <label

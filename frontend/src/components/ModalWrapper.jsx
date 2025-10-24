@@ -17,7 +17,8 @@ export default function ModalWrapper({
       <div className="absolute inset-0 bg-black/50 " onClick={onClose} />
 
       {/* Modal Panel */}
-      <div className="relative bg-white h-full w-[50%] min-w-[500px] shadow-2xl flex flex-col animate-slide-in">
+      {/* <div className="relative bg-white h-full md:w-[50%] min-w-[500px] w-full shadow-2xl flex flex-col animate-slide-in"> */}
+      <div className="relative bg-white h-full w-full md:w-[50%] md:min-w-[500px] shadow-2xl flex flex-col animate-slide-in">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-6 shadow-sm border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-900">{title}</h2>

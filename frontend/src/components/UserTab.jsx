@@ -90,6 +90,8 @@ const UserTab = ({ ordId }) => {
 
         setUsers((prev) => [...prev, response.data.user]);
         setAddingUser(false);
+        setUserName("");
+        setSelectedRole("");
       } catch (error) {
         console.error("Error submitting form:", error);
 
@@ -249,18 +251,26 @@ const UserTab = ({ ordId }) => {
 
       <ModalWrapper
         isOpen={addingUser}
-        onClose={() => setAddingUser(false)} // You might want to clear errors here too
+        onClose={() => {
+          setAddingUserErrors({ userName: "", selectedRole: "" });
+          setAddingUser(false);
+        }}
         title="add users"
         onSubmit={handleSubmit}
       >
-        <div className="max-w-md p-6 bg-white">
+        <div className=" md:px-4 px-2 bg-white">
           {/* Name Input */}
           <div className="mb-6">
-            <label className="block text-sm text-gray-700 mb-2">
+            <label
+              htmlFor="name"
+              className="block text-sm mb-2"
+              style={{ color: "#777777" }}
+            >
               Name of the user
             </label>
             <input
               type="text"
+              name="name"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               placeholder="Type here"
@@ -283,8 +293,12 @@ const UserTab = ({ ordId }) => {
           </div>
 
           {/* Role Dropdown */}
-          <div className="relative">
-            <label className="block text-sm text-gray-700 mb-2">
+          <div className="md:w-[45%] w-full relative">
+            <label
+              htmlFor="role"
+              className="block text-sm mb-2"
+              style={{ color: "#777777" }}
+            >
               Choose user role
             </label>
             <button

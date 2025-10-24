@@ -22,12 +22,12 @@ export default function Breadcrumb({ items = [] }) {
 
       {/* Breadcrumb Items */}
       {items.map((item, index) => (
-        <div key={index} className="flex items-center space-x-1">
+        <div key={index} className="flex items-center space-x-1 ">
           <ChevronRight className="w-6 h-6 text-[#777777]" />
           {item.link ? (
             <button
               onClick={(e) => handleClick(item.link, e)}
-              className="hover:text-gray-900 transition"
+              className="hover:text-gray-900 transition cursor-pointer"
             >
               {item.title}
             </button>

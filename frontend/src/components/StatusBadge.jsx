@@ -21,7 +21,7 @@ const StatusBadge = ({ title, config = [], needPill = true }) => {
           style={{ backgroundColor: textColor }}
         ></span>
       )}
-      <span>{title}</span>
+      <span>{title == "coordinator" ? "co-ordinator" : title}</span>
     </div>
   );
 };
