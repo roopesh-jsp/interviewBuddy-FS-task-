@@ -18,7 +18,13 @@ The API is built using **Node.js**, **Express**, **Sequelize** (as the ORM), and
 - **Database:** SQLite
 - **ORM:** Sequelize
 
----
+<br/>
+
+## 💾 Database Setup
+
+This project uses **SQLite** for easy setup and portability.
+
+When you run the application for the first time, Sequelize will automatically create a `database.sqlite` file in the project's root directory. No manual database configuration is needed.
 
 ## Database Models
 
@@ -35,6 +41,7 @@ Stores all information related to an organization.
 | `slug`             | STRING  | Not Null, Unique                  |                       |
 | `adminName`        | STRING  | Allow Null                        |                       |
 | `email`            | STRING  | Not Null, IsEmail                 |                       |
+| `image`            | STRING  | Allow Null                        |                       |
 | `supportEmail`     | STRING  | Allow Null, IsEmail               |                       |
 | `contact`          | STRING  | Not Null                          |                       |
 | `alternativePhone` | STRING  | Allow Null                        |                       |

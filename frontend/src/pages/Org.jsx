@@ -6,6 +6,9 @@ import { Edit2, Mail, Phone, Users, ChevronDown } from "lucide-react";
 import axios from "../config/axios";
 import EditOrg from "../components/EditOrg";
 import UserTab from "../components/UserTab";
+import Avatar from "../components/Avatar";
+import StatusBadge from "../components/StatusBadge";
+import { StatusConfig } from "../components/Organizations";
 
 const OrganizationProfile = () => {
   const { id } = useParams();
@@ -204,10 +207,11 @@ const OrganizationProfile = () => {
       const { data } = await axios.patch(`/org/status/${id}`, {
         status: newStatus,
       });
-      if (data?.organization) {
-        setOrganization(data.organization);
-        setShowStatusDropdown(false);
-      }
+      setOrganization((prev) => ({
+        ...prev,
+        status: newStatus,
+      }));
+      setShowStatusDropdown(false);
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -250,9 +254,12 @@ const OrganizationProfile = () => {
         {/* Header Card */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 bg-red-900 rounded-full flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
-              {organization.name.charAt(0)}
-            </div>
+            <Avatar
+              organization={organization}
+              onImageUpdate={(url) =>
+                setOrganization((prev) => ({ ...prev, image: url }))
+              }
+            />
             <div className="flex-1">
               <h1 className="text-2xl font-semibold text-gray-900">
                 {organization.name}
@@ -270,13 +277,11 @@ const OrganizationProfile = () => {
               </div>
             </div>
             <div className="flex items-center gap-2 relative">
-              <span
-                className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
-                  organization.status
-                )}`}
-              >
-                {organization.status}
-              </span>
+              <StatusBadge
+                config={StatusConfig}
+                title={organization.status}
+                needPill={true}
+              />
               <button
                 onClick={() => setShowStatusDropdown(!showStatusDropdown)}
                 className="text-blue-600 hover:bg-blue-50 px-3 py-1 rounded-lg text-sm font-medium flex items-center gap-1"

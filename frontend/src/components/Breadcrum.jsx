@@ -11,7 +11,7 @@ export default function Breadcrumb({ items = [] }) {
   };
 
   return (
-    <nav className="flex items-center space-x-2 text-sm text-gray-600 py-4">
+    <nav className="flex items-center space-x-2 text-sm text-gray-600 py-7">
       {/* Home Icon */}
       <button
         onClick={(e) => handleClick(items[0]?.link || "/", e)}
@@ -22,8 +22,8 @@ export default function Breadcrumb({ items = [] }) {
 
       {/* Breadcrumb Items */}
       {items.map((item, index) => (
-        <div key={index} className="flex items-center space-x-2">
-          <ChevronRight className="w-4 h-4 text-gray-400" />
+        <div key={index} className="flex items-center space-x-1">
+          <ChevronRight className="w-6 h-6 text-[#777777]" />
           {item.link ? (
             <button
               onClick={(e) => handleClick(item.link, e)}
@@ -32,7 +32,7 @@ export default function Breadcrumb({ items = [] }) {
               {item.title}
             </button>
           ) : (
-            <span className="text-gray-900">{item.title}</span>
+            <span className="text-[#777777]">{item.title}</span>
           )}
         </div>
       ))}

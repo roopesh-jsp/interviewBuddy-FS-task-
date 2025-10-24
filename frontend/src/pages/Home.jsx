@@ -4,6 +4,7 @@ import Breadcrumb from "../components/Breadcrum";
 import ModalWrapper from "../components/ModalWrapper";
 import B2BOrganizationsTable from "../components/Organizations";
 import axios from "../config/axios";
+import { Search } from "lucide-react";
 
 const breadcrumbItems = [{ title: "Manage B2B organizations", link: "/" }];
 
@@ -110,7 +111,10 @@ const Home = () => {
   return (
     <div className="w-full min-h-screen">
       <Navbar />
-      <div className="max-w-[1450px] px-10 mx-auto">
+      <div className="max-w-[1450px] md:px-10 px-3 mx-auto relative">
+        <div className="bg-[#F0EBFF] w-8 h-8 rounded-md flex items-center justify-center absolute top-5 md:right-15 right-3">
+          <Search className="w-3 h-3 text-secondary font-extrabold" />
+        </div>
         <Breadcrumb items={breadcrumbItems} />
 
         {loading ? (
@@ -130,34 +134,39 @@ const Home = () => {
 
       <ModalWrapper
         isOpen={addingOrg}
-        onClose={() => setAddingOrg(false)}
+        onClose={() => {
+          setFormErrors({});
+          setAddingOrg(false);
+        }}
         title={"Add Organization"}
         onSubmit={handleSubmit}
         loading={submitting}
       >
-        <form
-          className="w-full max-w-2xl mx-auto p-6"
-          onSubmit={(e) => e.preventDefault()}
-        >
+        <form className="w-full">
           <div className="grid grid-cols-2 gap-4 mb-4">
             {/* Name of the organization */}
             <div>
               <label
                 htmlFor="name"
-                className="block text-sm text-gray-600 mb-2"
+                className="block text-sm mb-2"
+                style={{ color: "#777777" }}
               >
-                Name of the organization <span className="text-red-500">*</span>
+                Name of the organization
               </label>
               <input
                 type="text"
                 id="name"
                 name="name"
-                placeholder="Enter organization name"
+                placeholder="Text"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border ${
-                  formErrors.name ? "border-red-500" : "border-gray-300"
+                className={`w-full px-3 py-3 border ${
+                  formErrors.name ? "border-red-500" : ""
                 } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm`}
+                style={{
+                  borderColor: formErrors.name ? undefined : "#777777",
+                  color: "#000000",
+                }}
               />
               {formErrors.name && (
                 <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>
@@ -168,20 +177,25 @@ const Home = () => {
             <div>
               <label
                 htmlFor="slug"
-                className="block text-sm text-gray-600 mb-2"
+                className="block text-sm mb-2"
+                style={{ color: "#777777" }}
               >
-                Slug <span className="text-red-500">*</span>
+                Slug
               </label>
               <input
                 type="text"
                 id="slug"
                 name="slug"
-                placeholder="Enter slug"
+                placeholder="Type here"
                 value={formData.slug}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border ${
-                  formErrors.slug ? "border-red-500" : "border-gray-300"
+                className={`w-full px-3 py-3 border ${
+                  formErrors.slug ? "border-red-500" : ""
                 } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm`}
+                style={{
+                  borderColor: formErrors.slug ? undefined : "#777777",
+                  color: "#000000",
+                }}
               />
               {formErrors.slug && (
                 <p className="text-red-500 text-xs mt-1">{formErrors.slug}</p>
@@ -194,20 +208,25 @@ const Home = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm text-gray-600 mb-2"
+                className="block text-sm mb-2"
+                style={{ color: "#777777" }}
               >
-                Organization mail <span className="text-red-500">*</span>
+                Organization mail
               </label>
               <input
                 type="email"
                 id="email"
                 name="email"
-                placeholder="Enter email"
+                placeholder="Type here"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border ${
-                  formErrors.email ? "border-red-500" : "border-gray-300"
+                className={`w-full px-3 py-3 border ${
+                  formErrors.email ? "border-red-500" : "border-[#777777]"
                 } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm`}
+                style={{
+                  borderColor: formErrors.email ? undefined : "#777777",
+                  color: "#000000",
+                }}
               />
               {formErrors.email && (
                 <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>
@@ -218,20 +237,25 @@ const Home = () => {
             <div>
               <label
                 htmlFor="contact"
-                className="block text-sm text-gray-600 mb-2"
+                className="block text-sm mb-2"
+                style={{ color: "#777777" }}
               >
-                Contact <span className="text-red-500">*</span>
+                Contact
               </label>
               <input
                 type="text"
                 id="contact"
                 name="contact"
-                placeholder="Enter contact number"
+                placeholder="Type here"
                 value={formData.contact}
                 onChange={handleChange}
-                className={`w-full px-3 py-2 border ${
-                  formErrors.contact ? "border-red-500" : "border-gray-300"
+                className={`w-full px-3 py-3 border ${
+                  formErrors.contact ? "border-red-500" : ""
                 } rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm`}
+                style={{
+                  borderColor: formErrors.contact ? undefined : "#777777",
+                  color: "#000000",
+                }}
               />
               {formErrors.contact && (
                 <p className="text-red-500 text-xs mt-1">
@@ -250,6 +274,13 @@ const Home = () => {
             </p>
           )}
         </form>
+
+        <style>{`
+          input::placeholder {
+            color: #777777;
+            opacity: 0.5;
+          }
+        `}</style>
       </ModalWrapper>
     </div>
   );

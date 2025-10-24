@@ -29,7 +29,7 @@ router.patch("/:id", updateOrganization);
 router.delete("/:id", deleteOrganization);
 
 // PATCH /org/img/:id
-router.patch("/img/:id", upload.single("image"), updateImage);
+router.patch("/image/:id", upload.single("image"), updateImage);
 
 // PATCH /org/status/:id
 router.patch("/status/:id", updateOrgStatus);
