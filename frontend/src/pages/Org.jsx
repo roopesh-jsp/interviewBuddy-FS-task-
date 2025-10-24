@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Breadcrumb from "../components/Breadcrum";
 import React, { useState, useEffect } from "react";
-import { Edit2, Mail, Phone, Users, ChevronDown } from "lucide-react";
+import { Edit2, Mail, Phone, Users, ChevronDown, Globe } from "lucide-react";
 import axios from "../config/axios";
 import EditOrg from "../components/EditOrg";
 import UserTab from "../components/UserTab";
@@ -247,123 +247,143 @@ const OrganizationProfile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen w-full">
       <Navbar />
-      <Breadcrumb items={breadcrumbItems} />
-      <div className="max-w-6xl mx-auto">
-        {/* Header Card */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="flex items-start gap-4">
-            <Avatar
-              organization={organization}
-              onImageUpdate={(url) =>
-                setOrganization((prev) => ({ ...prev, image: url }))
-              }
-            />
-            <div className="flex-1">
-              <h1 className="text-2xl font-semibold text-gray-900">
-                {organization.name}
-              </h1>
-              <p className="text-gray-600 mt-1">{organization.slug}</p>
-              <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-                <span className="flex items-center gap-1">
-                  <Phone className="w-4 h-4" />
-                  {organization.contact}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Mail className="w-4 h-4" />
-                  {organization.email}
-                </span>
+      <div className="w-full md:px-10 px-3 mx-auto relative">
+        <Breadcrumb items={breadcrumbItems} />
+        <div className="">
+          {/* Header Card */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 mb-6">
+            <div className="flex flex-col md:flex-row gap-4 items-start justify-between ">
+              <div className="flex md:flex-row flex-col gap-6 h-full ">
+                <Avatar
+                  organization={organization}
+                  onImageUpdate={(url) =>
+                    setOrganization((prev) => ({ ...prev, image: url }))
+                  }
+                />
+                <div className="flex flex-col flex-1  justify-between">
+                  <h1 className="text-3xl leading-8 font-semibold text-gray-900 break-all">
+                    {organization.name}
+                  </h1>
+
+                  <div className="flex flex-col mt-5 md:mt-0 gap-2 text-[14px] text-[#777777]">
+                    <span className="flex items-center  gap-2 break-all">
+                      <Mail className="w-4 h-4" />
+                      {organization.email}
+                    </span>
+                    <span className="flex items-center gap-2 break-all">
+                      <Phone className="w-4 h-4" />
+                      {organization.contact}
+                    </span>
+                    <span
+                      className="flex items-center gap-2 cursor-pointer line-clamp-2 break-all"
+                      onClick={() => {
+                        window.open(organization.websiteURL);
+                      }}
+                    >
+                      <Globe className={`w-4 h-4`} />
+                      <span
+                        className={` ${
+                          organization.websiteURL ? "text-secondary" : ""
+                        }`}
+                      >
+                        {organization.websiteURL || "N/A"}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 relative">
+                <StatusBadge
+                  config={StatusConfig}
+                  title={organization.status}
+                  needPill={true}
+                />
+                <button
+                  onClick={() => setShowStatusDropdown(!showStatusDropdown)}
+                  className="text-[#6834FF] hover:bg-blue-50 px-3 py-1 rounded-lg cursor-pointer text-[12px] "
+                >
+                  Change status
+                  {/* <ChevronDown className="w-4 h-4" /> */}
+                </button>
+
+                {showStatusDropdown && (
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[140px]">
+                    <button
+                      onClick={() => handleStatusChange("Active")}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-sm"
+                    >
+                      <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                      Active
+                    </button>
+                    <button
+                      onClick={() => handleStatusChange("Inactive")}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-sm"
+                    >
+                      <span className="w-2 h-2 rounded-full bg-stone-500"></span>
+                      Inactive
+                    </button>
+                    <button
+                      onClick={() => handleStatusChange("Blocked")}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-sm"
+                    >
+                      <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                      Blocked
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
-            <div className="flex items-center gap-2 relative">
-              <StatusBadge
-                config={StatusConfig}
-                title={organization.status}
-                needPill={true}
-              />
-              <button
-                onClick={() => setShowStatusDropdown(!showStatusDropdown)}
-                className="text-blue-600 hover:bg-blue-50 px-3 py-1 rounded-lg text-sm font-medium flex items-center gap-1"
-              >
-                Change status
-                <ChevronDown className="w-4 h-4" />
-              </button>
+          </div>
 
-              {showStatusDropdown && (
-                <div className="absolute top-full right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[140px]">
-                  <button
-                    onClick={() => handleStatusChange("Active")}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-sm"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                    Active
-                  </button>
-                  <button
-                    onClick={() => handleStatusChange("Inactive")}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-sm"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
-                    Inactive
-                  </button>
-                  <button
-                    onClick={() => handleStatusChange("Blocked")}
-                    className="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center gap-2 text-sm"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-red-500"></span>
-                    Blocked
-                  </button>
-                </div>
+          {/* Tabs */}
+          <div className=" ">
+            <div className=" mb-5  ">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setActiveTab("basic")}
+                  className={`px-4 py-1.5 rounded-lg leading-5  text-sm ${
+                    activeTab === "basic"
+                      ? "bg-[#F0EBFF] text-secondary font-semibold"
+                      : "bg-[#F5F6F7]  text-[#777777]"
+                  }`}
+                >
+                  Basic details
+                </button>
+                <button
+                  onClick={() => setActiveTab("users")}
+                  className={`px-4 py-1.5 rounded-lg  leading-5 text-sm ${
+                    activeTab === "users"
+                      ? "bg-[#F0EBFF] text-secondary font-semibold"
+                      : "bg-[#F5F6F7]  text-[#777777]"
+                  }`}
+                >
+                  Users
+                </button>
+              </div>
+            </div>
+
+            {/* Tab Content */}
+            <div className="">
+              {activeTab === "basic" && (
+                <EditOrg
+                  handleCancel={handleCancel}
+                  handleInputChange={handleInputChange}
+                  formData={formData}
+                  isEditing={isEditing}
+                  organization={organization}
+                  setIsEditing={setIsEditing}
+                  handleSubmit={handleSubmit}
+                  hasFieldError={hasFieldError}
+                  errors={errors}
+                  getFieldError={getFieldError}
+                />
               )}
+
+              {activeTab === "users" && <UserTab ordId={id} />}
             </div>
-          </div>
-        </div>
-
-        {/* Tabs */}
-        <div className=" ">
-          <div className="border-b mb-10 rounded-lg shadow-sm border  bg-white border-gray-200">
-            <div className="flex">
-              <button
-                onClick={() => setActiveTab("basic")}
-                className={`px-6 py-3 font-medium text-sm ${
-                  activeTab === "basic"
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Basic details
-              </button>
-              <button
-                onClick={() => setActiveTab("users")}
-                className={`px-6 py-3 font-medium text-sm ${
-                  activeTab === "users"
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Users
-              </button>
-            </div>
-          </div>
-
-          {/* Tab Content */}
-          <div className="p-6 rounded-lg shadow-sm border border-gray-200 bg-white">
-            {activeTab === "basic" && (
-              <EditOrg
-                handleCancel={handleCancel}
-                handleInputChange={handleInputChange}
-                formData={formData}
-                isEditing={isEditing}
-                organization={organization}
-                setIsEditing={setIsEditing}
-                handleSubmit={handleSubmit}
-                hasFieldError={hasFieldError}
-                errors={errors}
-                getFieldError={getFieldError}
-              />
-            )}
-
-            {activeTab === "users" && <UserTab ordId={id} />}
           </div>
         </div>
       </div>

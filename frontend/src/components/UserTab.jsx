@@ -1,8 +1,27 @@
 import React, { useEffect, useState } from "react";
 import ModalWrapper from "./ModalWrapper";
 
-import { Pencil, Trash, ChevronDown, Check } from "lucide-react";
+import { Pencil, Trash, ChevronDown, Check, Plus } from "lucide-react";
 import axios from "../config/axios";
+import StatusBadge from "./StatusBadge";
+
+export const userRoles = [
+  {
+    title: "admin",
+    bg: "#E7F8E9",
+    color: "#12BB23",
+  },
+  {
+    title: "co-ordinator",
+    bg: "#FEEFE6",
+    color: "#DB5800",
+  },
+  {
+    title: "coordinator",
+    bg: "#FEEFE6",
+    color: "#DB5800",
+  },
+];
 const UserTab = ({ ordId }) => {
   const [addingUser, setAddingUser] = useState(false);
   const [userName, setUserName] = useState("");
@@ -119,48 +138,39 @@ const UserTab = ({ ordId }) => {
   };
   return (
     <div>
-      <div className="">
+      <div className="bg-white rounded-md border border-[#DFE2E7] mb-10 ">
         {/* Header */}
-        <div className="flex w-full items-center justify-between mb-6">
-          <h1 className="text-2xl font-semibold text-gray-800">Users</h1>
+        <div className="flex items-center justify-between px-3 sm:px-4 md:px-5 py-3 sm:py-3 md:py-4">
+          <h2 className="md:text-xl text-lg font-semibold text-[#232323]">
+            Users
+          </h2>
+
           <button
             onClick={() => setAddingUser(true)}
-            className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 flex items-center gap-2"
+            title="add organization"
+            className="flex items-center gap-2 px-2 py-1.5 sm:px-3 sm:py-2 md:px-4 md:py-2 bg-secondary text-white rounded-lg hover:bg-purple-700 transition"
           >
-            {/* It's good practice to include an icon in the button */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            Add user
+            <Plus className="w-4 h-4" />
+            {/* Text hidden on small screens */}
+            <span className="hidden sm:inline">Add user</span>
           </button>
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left ">
-            <thead className="border-b border-gray-200">
-              <tr>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 w-[70px]">
+        <div className="overflow-x-auto ">
+          <table className="min-w-[750px] w-full border border-gray-200 rounded-lg">
+            <thead className="bg-[#F5F6F7] text-[#232323] text-sm leading-5 font-normal">
+              <tr className="px-3">
+                <th className="px-6   py-3 text-left w-25 font-normal">
                   Sr. No
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500">
+                <th className="px-6 py-3 text-left min-w-[200px] font-normal">
                   User name
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 w-[300px]">
+                <th className="px-6 py-3 text-left min-w-[200px] font-normal">
                   Role
                 </th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-500 w-[100px]">
+                <th className="px-6 py-3 text-left w-[120px] font-normal">
                   Action
                 </th>
               </tr>
@@ -170,48 +180,36 @@ const UserTab = ({ ordId }) => {
               {users.map((user, index) => (
                 <tr
                   key={user.id}
-                  className="hover:bg-gray-50 border-b w-full border-gray-200 last:border-b-0"
+                  className="hover:bg-gray-50 border-t  border-gray-200 text-sm"
                 >
-                  <td className="px-4 py-3 text-gray-700">{index + 1}</td>
-                  <td className="px-4 py-3 font-medium text-gray-800">
+                  <td className=" px-6 py-4 text-[#232323]">{index + 1}</td>
+                  <td className="px-6 py-4 text-sm leading-5 text-[#232323]">
                     {user.name}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-6 py-4">
                     {isEditing === user.id ? (
-                      // In EDIT mode, show a dropdown
                       <select
                         value={user.role}
                         onChange={(e) =>
                           handleRoleChangeOnEdit(user.id, e.target.value)
                         }
-                        // This default styling looks good.
-                        // For best results: npm install -D @tailwindcss/forms
-                        // and add require('@tailwindcss/forms') to your tailwind.config.js plugins
                         className="block w-full py-1.5 px-2 rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                       >
-                        <option value="select">select role</option>
+                        <option value="select">Select role</option>
                         <option value="admin">Admin</option>
                         <option value="coordinator">Co-ordinator</option>
-                        {/* Add any other roles you have */}
                       </select>
                     ) : (
-                      // In VIEW mode, show the span
-                      <span
-                        className={`px-3 py-1 rounded-md text-sm font-medium ${
-                          user.role.toLowerCase() === "admin"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-orange-100 text-orange-700"
-                        }`}
-                      >
-                        {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
-                      </span>
+                      <StatusBadge
+                        config={userRoles}
+                        title={user.role}
+                        needPill={false}
+                      />
                     )}
                   </td>
 
-                  {/* --- Action Cell --- */}
-                  <td className="px-4 py-3 flex gap-3">
-                    {isEditing ? (
-                      // In EDIT mode, show a 'Save' button
+                  <td className="px-6 py-4 flex items-center gap-3">
+                    {isEditing === user.id ? (
                       <button
                         onClick={() => {
                           setIsEditing(null);
@@ -222,9 +220,8 @@ const UserTab = ({ ordId }) => {
                         <Check size={18} />
                       </button>
                     ) : (
-                      // In VIEW mode, show the 'Edit' button
                       <button
-                        onClick={() => setIsEditing(user.id)} // Click to enter edit mode
+                        onClick={() => setIsEditing(user.id)}
                         className="text-gray-500 hover:text-gray-700"
                       >
                         <Pencil size={18} />
@@ -241,9 +238,10 @@ const UserTab = ({ ordId }) => {
               ))}
             </tbody>
           </table>
+
           {users.length === 0 && (
-            <h3 className="w-full text-2xl my-6 text-center">
-              No users on this organization
+            <h3 className="w-full text-2xl my-6 text-center text-gray-600">
+              No users in this organization
             </h3>
           )}
         </div>

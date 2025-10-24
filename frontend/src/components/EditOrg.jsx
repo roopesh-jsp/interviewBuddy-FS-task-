@@ -12,19 +12,20 @@ const EditOrg = ({
   errors,
   getFieldError,
 }) => {
+  console.log(errors);
+
   return (
     <div>
-      <div>
+      <div className="p-6 rounded-lg shadow-sm border border-gray-200 bg-white">
         {/* Profile Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">Profile</h2>
+          <h2 className="text-xl font-semibold text-[#232323]">Profile</h2>
           {!isEditing ? (
             <button
               onClick={() => setIsEditing(true)}
-              className="flex items-center gap-2 px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+              className="flex items-center gap-2 px-4 py-4 text-secondary bg-[#F0EBFF] hover:bg-blue-50 rounded-md transition-colors"
             >
               <Edit2 className="w-4 h-4" />
-              Edit
             </button>
           ) : (
             <div className="flex gap-2">
@@ -44,6 +45,9 @@ const EditOrg = ({
           )}
         </div>
 
+        {/* Separator */}
+        <hr className="text-[#DFE2E7] mb-7" />
+
         {/* General error message */}
         {errors.find((err) => err.field === "general") && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
@@ -53,45 +57,42 @@ const EditOrg = ({
           </div>
         )}
 
-        {/* Organization Details Section */}
+        {/* Organization Details */}
         <div className="mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">
-            Organization details
-          </h3>
-          <div className="grid grid-cols-2 gap-6">
+          <h3 className="text-lg font-semibold mb-4">Organization details</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm text-gray-600 mb-2">
+              <label className="block text-[12px] text-[#777777] mb-2">
                 Organization Name
               </label>
               <input
                 type="text"
                 value={organization.name}
                 disabled
-                className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 cursor-not-allowed"
+                className="w-full px-3 h-11 bg-[#F5F6F7] border border-[#DFE2E7] rounded-md text-sm text-[#777777] cursor-not-allowed"
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-600 mb-2">
+              <label className="block text-[12px] text-[#777777] mb-2">
                 Organization SLUG
               </label>
               <input
                 type="text"
                 value={organization.slug}
                 disabled
-                className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 cursor-not-allowed"
+                className="w-full px-3 h-11 bg-[#F5F6F7] border border-[#DFE2E7] rounded-md text-sm text-[#777777] cursor-not-allowed"
               />
             </div>
           </div>
         </div>
 
-        {/* Contact Details Section */}
+        {/* Contact Details */}
         <div className="mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">
-            Contact details
-          </h3>
-          <div className="grid grid-cols-2 gap-6">
+          <h3 className="text-lg font-semibold mb-4">Contact details</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Primary Admin Name */}
             <div>
-              <label className="block text-sm text-gray-600 mb-2">
+              <label className="block text-[12px] text-[#777777] mb-2">
                 Primary Admin name
               </label>
               <input
@@ -101,15 +102,13 @@ const EditOrg = ({
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder={isEditing ? "Taylor Jones" : ""}
-                className={`w-full px-3 py-2 border rounded-lg ${
+                className={`w-full px-3 h-11 border rounded-md text-sm text-[#777777] ${
                   hasFieldError("adminName")
-                    ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                    : isEditing
-                    ? "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    : "bg-gray-50 border-gray-200 text-gray-600"
+                    ? "border-red-500"
+                    : "border-[#DFE2E7]"
                 } ${
-                  !isEditing && "cursor-not-allowed"
-                } outline-none placeholder:text-gray-400 placeholder:font-normal`}
+                  isEditing ? "bg-white" : "bg-[#F5F6F7] cursor-not-allowed"
+                }`}
               />
               {hasFieldError("adminName") && (
                 <p className="text-red-500 text-xs mt-1">
@@ -117,9 +116,38 @@ const EditOrg = ({
                 </p>
               )}
             </div>
+
+            {/* Primary Admin Mail */}
             <div>
-              <label className="block text-sm text-gray-600 mb-2">
-                Primary Admin Mail id
+              <label className="block text-[12px] text-[#777777] mb-2">
+                Primary Admin Mail-id
+              </label>
+              <input
+                type="email"
+                name="primaryAdminMail"
+                value={formData.primaryAdminMail}
+                onChange={handleInputChange}
+                disabled={!isEditing}
+                placeholder={isEditing ? "Gitam@gmail.com" : ""}
+                className={`w-full px-3 h-11 border rounded-md text-sm text-[#777777] ${
+                  hasFieldError("primaryAdminMail")
+                    ? "border-red-500"
+                    : "border-[#DFE2E7]"
+                } ${
+                  isEditing ? "bg-white" : "bg-[#F5F6F7] cursor-not-allowed"
+                }`}
+              />
+              {hasFieldError("primaryAdminMail") && (
+                <p className="text-red-500 text-xs mt-1">
+                  {getFieldError("primaryAdminMail")}
+                </p>
+              )}
+            </div>
+
+            {/* Support Email */}
+            <div>
+              <label className="block text-[12px] text-[#777777] mb-2">
+                Support Email ID
               </label>
               <input
                 type="email"
@@ -127,16 +155,14 @@ const EditOrg = ({
                 value={formData.supportEmail}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                placeholder={isEditing ? "admin@organization.com" : ""}
-                className={`w-full px-3 py-2 border rounded-lg ${
+                placeholder={isEditing ? "support@organization.com" : ""}
+                className={`w-full px-3 h-11 border rounded-md text-sm text-[#777777] ${
                   hasFieldError("supportEmail")
-                    ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                    : isEditing
-                    ? "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    : "bg-gray-50 border-gray-200 text-gray-600"
+                    ? "border-red-500"
+                    : "border-[#DFE2E7]"
                 } ${
-                  !isEditing && "cursor-not-allowed"
-                } outline-none placeholder:text-gray-400 placeholder:font-normal`}
+                  isEditing ? "bg-white" : "bg-[#F5F6F7] cursor-not-allowed"
+                }`}
               />
               {hasFieldError("supportEmail") && (
                 <p className="text-red-500 text-xs mt-1">
@@ -144,139 +170,129 @@ const EditOrg = ({
                 </p>
               )}
             </div>
-            <div>
-              <label className="block text-sm text-gray-600 mb-2">
-                Support Email ID
-              </label>
-              <input
-                type="email"
-                value={organization.email}
-                disabled
-                className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 cursor-not-allowed"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-gray-600 mb-2">
-                Phone no
-              </label>
-              <div className="flex gap-2">
-                <select
-                  className="w-20 px-2 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 cursor-not-allowed"
-                  disabled
-                >
-                  <option>+91</option>
-                </select>
-                <input
-                  type="text"
-                  value={organization.contact}
-                  disabled
-                  className="flex-1 px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-500 cursor-not-allowed"
-                />
+
+            {/* Phone Numbers */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Phone No (disabled) */}
+              <div>
+                <label className="block text-[12px] text-[#777777] mb-2">
+                  Phone no
+                </label>
+                <div className="flex gap-2">
+                  <SelectWithIcon
+                    disabled
+                    className="w-20 h-11 px-2 bg-[#F5F6F7] border border-[#DFE2E7] rounded-md text-sm text-[#777777] cursor-not-allowed"
+                    value="+91"
+                  >
+                    <option>+91</option>
+                    <option>+1</option>
+                    <option>+44</option>
+                  </SelectWithIcon>
+                  <input
+                    type="text"
+                    value={organization.contact}
+                    disabled
+                    className="flex-1 h-11 px-3 bg-[#F5F6F7] border border-[#DFE2E7] rounded-md text-sm text-[#777777] cursor-not-allowed"
+                  />
+                </div>
               </div>
-            </div>
-            <div>
-              <label className="block text-sm text-gray-600 mb-2">
-                Alternative phone no
-              </label>
-              <div className="flex gap-2">
-                <select
-                  className={`w-20 px-2 py-2 border rounded-lg ${
-                    isEditing
-                      ? "border-gray-300"
-                      : "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
-                  }`}
-                  disabled={!isEditing}
-                >
-                  <option>+91</option>
-                </select>
-                <div className="flex-1">
+
+              {/* Alternative Phone (editable) */}
+              <div>
+                <label className="block text-[12px] text-[#777777] mb-2">
+                  Alternative phone no
+                </label>
+                <div className="flex gap-2">
+                  <SelectWithIcon
+                    disabled={!isEditing}
+                    className={`w-20 h-11 px-2  rounded-md text-sm ${
+                      isEditing
+                        ? "bg-white text-[#333]"
+                        : "bg-[#F5F6F7] text-[#777777] cursor-not-allowed"
+                    }`}
+                    name="altCountryCode"
+                    value={formData.altCountryCode || "+91"}
+                    onChange={handleInputChange}
+                  >
+                    <option value="+91">+91</option>
+                    <option value="+1">+1</option>
+                    <option value="+44">+44</option>
+                  </SelectWithIcon>
                   <input
                     type="text"
                     name="alternativePhone"
                     value={formData.alternativePhone}
                     onChange={handleInputChange}
                     disabled={!isEditing}
-                    placeholder={isEditing ? "9347294813" : ""}
-                    className={`w-full px-3 py-2 border rounded-lg ${
+                    placeholder={isEditing ? "9876543210" : ""}
+                    className={`flex-1 h-11 px-3 border rounded-md text-sm text-[#777777] ${
                       hasFieldError("alternativePhone")
-                        ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                        : isEditing
-                        ? "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                        : "bg-gray-50 border-gray-200 text-gray-600"
+                        ? "border-red-500"
+                        : "border-[#DFE2E7]"
                     } ${
-                      !isEditing && "cursor-not-allowed"
-                    } outline-none placeholder:text-gray-400 placeholder:font-normal`}
+                      isEditing ? "bg-white" : "bg-[#F5F6F7] cursor-not-allowed"
+                    }`}
                   />
                 </div>
+                {hasFieldError("alternativePhone") && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {getFieldError("alternativePhone")}
+                  </p>
+                )}
               </div>
-              {hasFieldError("alternativePhone") && (
-                <p className="text-red-500 text-xs mt-1">
-                  {getFieldError("alternativePhone")}
-                </p>
-              )}
             </div>
           </div>
         </div>
 
         {/* Maximum Allowed Coordinators */}
         <div className="mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">
+          <h3 className="text-lg font-semibold mb-4">
             Maximum Allowed Coordinators
           </h3>
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm text-gray-600 mb-2">
-                No. of Max Coordinators
+              <label className="block text-[12px] text-[#777777] mb-2">
+                Max active Coordinators allowed
               </label>
-              <select
+              <SelectWithIcon
                 name="maxCoordinators"
                 value={formData.maxCoordinators}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  hasFieldError("maxCoordinators")
-                    ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                    : isEditing
-                    ? "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    : "bg-gray-50 border-gray-200 text-gray-600"
-                } ${!isEditing && "cursor-not-allowed"} outline-none`}
+                className={`w-full px-3 h-11 border border-[#DFE2E7] rounded-md text-sm ${
+                  isEditing
+                    ? "bg-white text-[#333]"
+                    : "bg-[#F5F6F7] text-[#777777] cursor-not-allowed"
+                }`}
               >
                 <option value={3}>Up to 3 Coordinators</option>
                 <option value={5}>Up to 5 Coordinators</option>
                 <option value={10}>Up to 10 Coordinators</option>
                 <option value={999}>Unlimited</option>
-              </select>
-              {hasFieldError("maxCoordinators") && (
-                <p className="text-red-500 text-xs mt-1">
-                  {getFieldError("maxCoordinators")}
-                </p>
-              )}
+              </SelectWithIcon>
             </div>
           </div>
         </div>
 
         {/* Timezone */}
         <div className="mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">Timezone</h3>
-          <div className="grid grid-cols-2 gap-6">
+          <h3 className="text-lg font-semibold mb-4">Timezone</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm text-gray-600 mb-2">
+              <label className="block text-[12px] text-[#777777] mb-2">
                 Common name
               </label>
-              <select
+              <SelectWithIcon
                 name="timezone"
                 value={formData.timezone}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  hasFieldError("timezone")
-                    ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                    : isEditing
-                    ? "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    : "bg-gray-50 border-gray-200 text-gray-600"
-                } ${!isEditing && "cursor-not-allowed"} outline-none`}
+                className={`w-full px-3 h-11 border border-[#DFE2E7] rounded-md text-sm ${
+                  isEditing
+                    ? "bg-white text-[#333]"
+                    : "bg-[#F5F6F7] text-[#777777] cursor-not-allowed"
+                }`}
               >
-                <option value="">Select timezone</option>
                 <option value="India Standard Time">India Standard Time</option>
                 <option value="Eastern Standard Time">
                   Eastern Standard Time
@@ -287,90 +303,67 @@ const EditOrg = ({
                 <option value="Pacific Standard Time">
                   Pacific Standard Time
                 </option>
-              </select>
-              {hasFieldError("timezone") && (
-                <p className="text-red-500 text-xs mt-1">
-                  {getFieldError("timezone")}
-                </p>
-              )}
+              </SelectWithIcon>
             </div>
             <div>
-              <label className="block text-sm text-gray-600 mb-2">Region</label>
-              <select
+              <label className="block text-[12px] text-[#777777] mb-2">
+                Region
+              </label>
+              <SelectWithIcon
                 name="region"
                 value={formData.region}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  hasFieldError("region")
-                    ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                    : isEditing
-                    ? "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    : "bg-gray-50 border-gray-200 text-gray-600"
-                } ${!isEditing && "cursor-not-allowed"} outline-none`}
+                className={`w-full px-3 h-11 border border-[#DFE2E7] rounded-md text-sm ${
+                  isEditing
+                    ? "bg-white text-[#333]"
+                    : "bg-[#F5F6F7] text-[#777777] cursor-not-allowed"
+                }`}
               >
-                <option value="">Select region</option>
                 <option value="Asia/Colombo">Asia/Colombo</option>
                 <option value="America/New_York">America/New_York</option>
                 <option value="Europe/London">Europe/London</option>
                 <option value="Asia/Kolkata">Asia/Kolkata</option>
-                <option value="America/Los_Angeles">America/Los_Angeles</option>
-              </select>
-              {hasFieldError("region") && (
-                <p className="text-red-500 text-xs mt-1">
-                  {getFieldError("region")}
-                </p>
-              )}
+              </SelectWithIcon>
             </div>
           </div>
         </div>
 
         {/* Language */}
         <div className="mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">Language</h3>
-          <div className="grid grid-cols-2 gap-6">
+          <h3 className="text-lg font-semibold mb-4">Language</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm text-gray-600 mb-2">
+              <label className="block text-[12px] text-[#777777] mb-2">
                 Choose the language for organization
               </label>
-              <select
+              <SelectWithIcon
                 name="language"
                 value={formData.language}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  hasFieldError("language")
-                    ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                    : isEditing
-                    ? "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    : "bg-gray-50 border-gray-200 text-gray-600"
-                } ${!isEditing && "cursor-not-allowed"} outline-none`}
+                className={`w-full px-3 h-11 border border-[#DFE2E7] rounded-md text-sm ${
+                  isEditing
+                    ? "bg-white text-[#333]"
+                    : "bg-[#F5F6F7] text-[#777777] cursor-not-allowed"
+                }`}
               >
-                <option value="">Select language</option>
                 <option value="English">English</option>
                 <option value="Spanish">Spanish</option>
                 <option value="French">French</option>
                 <option value="German">German</option>
-                <option value="Hindi">Hindi</option>
-              </select>
-              {hasFieldError("language") && (
-                <p className="text-red-500 text-xs mt-1">
-                  {getFieldError("language")}
-                </p>
-              )}
+              </SelectWithIcon>
             </div>
           </div>
         </div>
 
         {/* Official Website URL */}
         <div className="mb-8">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">
-            Official website URL
-          </h3>
-          <div className="grid grid-cols-2 gap-6">
+          <h3 className="text-lg font-semibold mb-4">Official website URL</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm text-gray-600 mb-2">
-                website URL
+              <label className="block text-[12px] text-[#777777] mb-2">
+                Website URL
               </label>
               <input
                 type="url"
@@ -379,21 +372,10 @@ const EditOrg = ({
                 onChange={handleInputChange}
                 disabled={!isEditing}
                 placeholder={isEditing ? "https://organization.com" : ""}
-                className={`w-full px-3 py-2 border rounded-lg ${
-                  hasFieldError("websiteURL")
-                    ? "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500"
-                    : isEditing
-                    ? "border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    : "bg-gray-50 border-gray-200 text-gray-600"
-                } ${
-                  !isEditing && "cursor-not-allowed"
-                } outline-none placeholder:text-gray-400 placeholder:font-normal`}
+                className={`w-full px-3 h-11 border border-[#DFE2E7] rounded-md text-sm text-[#777777] ${
+                  isEditing ? "bg-white" : "bg-[#F5F6F7] cursor-not-allowed"
+                }`}
               />
-              {hasFieldError("websiteURL") && (
-                <p className="text-red-500 text-xs mt-1">
-                  {getFieldError("websiteURL")}
-                </p>
-              )}
             </div>
           </div>
         </div>
@@ -403,3 +385,37 @@ const EditOrg = ({
 };
 
 export default EditOrg;
+
+const SelectWithIcon = ({ children, ...props }) => {
+  return (
+    <div className="relative">
+      <select
+        {...props}
+        className={`${props.className ?? ""} appearance-none pr-10`}
+      >
+        {children}
+      </select>
+
+      {/* custom arrow */}
+      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
+        {/* SVG sized to match h-11 input visually */}
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M7 10l5 5 5-5"
+            stroke="#9AA0A6"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+    </div>
+  );
+};

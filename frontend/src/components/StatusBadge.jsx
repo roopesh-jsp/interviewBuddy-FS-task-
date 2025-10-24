@@ -1,6 +1,8 @@
 import React from "react";
 
 const StatusBadge = ({ title, config = [], needPill = true }) => {
+  console.log(title);
+
   // Find the config matching the title
   const status = config.find((item) => item.title === title);
 
