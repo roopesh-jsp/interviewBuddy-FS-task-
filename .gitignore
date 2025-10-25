@@ -34,10 +34,10 @@ pids
 *.pid.lock
 
 # Database files
-*.sqlite
-*.sqlite3
-*.db
-*.db-journal
+# *.sqlite
+# *.sqlite3
+# *.db
+# *.db-journal
 
 # OS files
 .DS_Store
