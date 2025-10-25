@@ -20,11 +20,89 @@ The API is built using **Node.js**, **Express**, **Sequelize** (as the ORM), and
 
 <br/>
 
+---
+
 ## 💾 Database Setup
 
 This project uses **SQLite** for easy setup and portability.
 
-When you run the application for the first time, Sequelize will automatically create a `database.sqlite` file in the project's root directory. No manual database configuration is needed.
+When you run the application for the first time, Sequelize will automatically create a `database.sqlite` file in the `backend` directory. No manual database configuration is needed.
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to get a copy of the project up and running on your local machine.
+
+### Prerequisites
+
+You must have [Node.js](https://nodejs.org/) (which includes npm) installed on your system.
+
+### Installation & Setup
+
+1.  **Clone the repository:**
+
+    ```sh
+    git clone https://github.com/roopesh-jsp/interviewBuddy-FS-task-.git
+    cd interviewBuddy-FS-task-
+    ```
+
+2.  **Set up the Backend:**
+
+    ```sh
+    # Navigate to the backend folder
+    cd backend
+
+    # Install dependencies
+    npm install
+    ```
+
+    - **Environment Variables:**
+      The backend requires environment variables for image uploading to ImageKit. Create a `.env` file in the `backend` folder.
+      For quick testing, you can use these variables. **Please do not misuse them.**
+      ```.env
+      IMAGEKIT_PRIVATE_KEY=private_mGJIrTqVWdPI2hSE3+mno/AKhAc=
+      IMAGEKIT_PUBLIC_KEY=public_eopj0cm2LX/+dr0m3LMSAcC84d4=
+      IMAGEKIT_URL_ENDPOINT=[https://ik.imagekit.io/roopesh/](https://ik.imagekit.io/roopesh/)
+      ```
+    - **Run the backend server:**
+      ```sh
+      npm start
+      ```
+      The server will be running on `http://localhost:5000` (or as specified).
+
+3.  **Set up the Frontend:**
+
+    ```sh
+    # Navigate to the frontend folder (from the root)
+    cd fronteend
+
+    # Install dependencies
+    npm install
+    ```
+
+    - **Run the frontend app:**
+      ```sh
+      npm run dev
+      ```
+      The React development server will start, usually on `http://localhost:5173`.
+
+---
+
+## ✨ Features
+
+- **Full-stack Validation:** All forms are validated on both the frontend (client-side) and backend (server-side) to ensure data integrity.
+- **CRUD Operations:** Full Create, Read, Update, and Delete functionality for both **Organizations** and **Users**.
+- **Image Uploads:** Seamlessly handles organization image uploads and updates using **ImageKit** for fast cloud storage and delivery.
+- **Modern UX & UI:**
+  - The frontend includes loaders and error messages to provide clear user feedback.
+  - Several actions (like creating or updating data) use **optimistic UI updates** for a faster, more responsive user experience.
+  - Features a functional **search bar** and dynamic **breadcrumbs** for easy navigation.
+- **Figma-Accurate Design:** The UI is a **100% match** of the provided Figma design file.
+- **Fully Mobile Responsive:** The application is fully responsive. As no mobile Figma was provided, styles were intuitively designed to ensure a great user experience on all screen sizes.
+- **Status & Role Management:** Easily update an organization's status (`Active`, `Inactive`, `Blocked`) or a user's role (`admin`, `coordinator`) with dedicated controls.
+
+<br/>
 
 ## Database Models
 
