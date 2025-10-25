@@ -5,6 +5,7 @@ import ModalWrapper from "../components/ModalWrapper";
 import B2BOrganizationsTable from "../components/Organizations";
 import axios from "../config/axios";
 import { Search } from "lucide-react";
+import SearchIcon from "../components/SearchIcon";
 
 const breadcrumbItems = [{ title: "Manage B2B organizations", link: "/" }];
 
@@ -23,20 +24,24 @@ const Home = () => {
   });
 
   // Fetch organizations
+  const fetchOrganizations = async (searchTerm) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data } = await axios.get("/org", {
+        params: {
+          name: searchTerm,
+        },
+      });
+      if (data) setOrganizations(data.organizations);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to fetch organizations. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchOrganizations = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const { data } = await axios.get("/org");
-        if (data) setOrganizations(data.organizations);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to fetch organizations. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchOrganizations();
   }, []);
 
@@ -112,9 +117,7 @@ const Home = () => {
     <div className="w-full min-h-screen">
       <Navbar />
       <div className="max-w-[1450px] md:px-10 px-3 mx-auto relative">
-        <div className="bg-[#F0EBFF] w-8 h-8 rounded-md flex items-center justify-center absolute top-5 md:right-15 right-3">
-          <Search className="w-3 h-3 text-secondary font-extrabold" />
-        </div>
+        <SearchIcon fetchOrganizations={fetchOrganizations} />
         <Breadcrumb items={breadcrumbItems} />
 
         {loading ? (

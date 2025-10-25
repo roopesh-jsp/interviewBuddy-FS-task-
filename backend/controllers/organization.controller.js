@@ -1,5 +1,6 @@
 import imagekit from "../config/imagekit.js";
 import Organization from "../models/organization.model.js";
+import { Op } from "sequelize";
 export const createOrganization = async (req, res) => {
   try {
     const { name, slug, contact, email } = req.body;
@@ -30,7 +31,23 @@ export const createOrganization = async (req, res) => {
 
 export const getAllOrganizations = async (req, res) => {
   try {
-    const orgs = await Organization.findAll(); // Fetch all orgs
+    const { name } = req.query; // Get query param
+    // console.log("name", name);
+
+    let orgs;
+
+    if (name) {
+      orgs = await Organization.findAll({
+        where: {
+          name: {
+            [Op.like]: `%${name}%`, // Works in SQLite (case-insensitive by default)
+          },
+        },
+      });
+    } else {
+      orgs = await Organization.findAll();
+    }
+
     res.status(200).json({
       message: "Organizations fetched successfully",
       organizations: orgs,
@@ -40,6 +57,7 @@ export const getAllOrganizations = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 export const getOrganizationById = async (req, res) => {
   try {
     const { id } = req.params;
