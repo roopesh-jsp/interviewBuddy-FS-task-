@@ -6,6 +6,7 @@ import B2BOrganizationsTable from "../components/Organizations";
 import axios from "../config/axios";
 import { Search } from "lucide-react";
 import SearchIcon from "../components/SearchIcon";
+import Loader from "../components/Loader";
 
 const breadcrumbItems = [{ title: "Manage B2B organizations", link: "/" }];
 
@@ -121,8 +122,9 @@ const Home = () => {
         <Breadcrumb items={breadcrumbItems} />
 
         {loading ? (
-          <div className="text-center text-gray-600 py-10">
-            Loading organizations...
+          <div className="h-44 w-full">
+            {" "}
+            <Loader />
           </div>
         ) : error && !addingOrg ? (
           <div className="text-center text-red-500 py-10">{error}</div>
@@ -143,7 +145,7 @@ const Home = () => {
         }}
         title={"Add Organization"}
         onSubmit={handleSubmit}
-        loading={submitting}
+        isSubmitting={submitting}
       >
         <form className="w-full">
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4 mb-4">
@@ -272,7 +274,7 @@ const Home = () => {
             <p className="text-red-500 text-sm mt-4 text-center">{error}</p>
           )}
           {submitting && (
-            <p className="text-gray-500 text-sm mt-2 text-center">
+            <p className="text-gray-500 text-sm mt-20 text-center">
               Adding organization...
             </p>
           )}

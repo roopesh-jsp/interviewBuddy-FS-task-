@@ -8,6 +8,7 @@ const EditOrg = ({
   handleInputChange,
   formData,
   setIsEditing,
+  isSubmitting,
   hasFieldError,
   errors,
   getFieldError,
@@ -31,15 +32,17 @@ const EditOrg = ({
             <div className="flex gap-2">
               <button
                 onClick={handleCancel}
-                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                disabled={isSubmitting}
+                className="px-4 py-2 text-gray-600 hover:bg-gray-100 disabled:cursor-not-allowed rounded-lg transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSubmit}
-                className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors"
+                disabled={isSubmitting}
+                className="px-4 py-2 bg-blue-600 text-white disabled:cursor-not-allowed hover:bg-blue-700 rounded-lg transition-colors"
               >
-                Save
+                {isSubmitting ? "Saving..." : "Save"}
               </button>
             </div>
           )}

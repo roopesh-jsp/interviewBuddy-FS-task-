@@ -8,6 +8,7 @@ export default function ModalWrapper({
   onSubmit,
   submitText = "Add",
   cancelText = "Cancel",
+  isSubmitting = false,
 }) {
   if (!isOpen) return null;
 
@@ -37,15 +38,17 @@ export default function ModalWrapper({
         <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-200">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-secondary bg-[#F0EBFF] hover:bg-gray-100 rounded transition"
+            disabled={isSubmitting}
+            className="px-4 py-2 text-secondary bg-[#F0EBFF] disabled:cursor-not-allowed hover:bg-gray-100 rounded transition"
           >
             {cancelText}
           </button>
           <button
             onClick={onSubmit}
-            className="px-4 py-2 bg-secondary text-white hover:bg-purple-700 rounded transition"
+            disabled={isSubmitting}
+            className="px-4 py-2 bg-secondary text-white disabled:cursor-not-allowed hover:bg-purple-700 rounded transition"
           >
-            {submitText}
+            {isSubmitting ? "saving ..." : submitText}
           </button>
         </div>
       </div>

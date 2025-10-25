@@ -4,6 +4,7 @@ import ModalWrapper from "./ModalWrapper";
 import { Pencil, Trash, ChevronDown, Check, Plus } from "lucide-react";
 import axios from "../config/axios";
 import StatusBadge from "./StatusBadge";
+import Loader from "./Loader";
 
 export const userRoles = [
   {
@@ -24,9 +25,11 @@ export const userRoles = [
 ];
 const UserTab = ({ ordId }) => {
   const [addingUser, setAddingUser] = useState(false);
+  const [isAddingUser, setIsAddingUser] = useState(false);
   const [userName, setUserName] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [addingUserErros, setAddingUserErrors] = useState({
     userName: "",
@@ -38,12 +41,15 @@ const UserTab = ({ ordId }) => {
   useEffect(() => {
     (async () => {
       try {
+        setIsLoading(true);
         const { data } = await axios.get("/users/org/" + ordId);
         if (data) {
           setUsers(data.users);
         }
       } catch (error) {
         console.log("error geting users data", error);
+      } finally {
+        setIsLoading(false);
       }
     })();
   }, []);
@@ -80,6 +86,7 @@ const UserTab = ({ ordId }) => {
       console.log("Validation passed. Submitting:", userName, selectedRole);
 
       try {
+        setIsAddingUser(true);
         const response = await axios.post("/users", {
           name: userName,
           role: selectedRole,
@@ -100,7 +107,7 @@ const UserTab = ({ ordId }) => {
           form: "An error occurred. Please try again.",
         }));
       } finally {
-        // setIsLoading(false);
+        setIsAddingUser(false);
       }
     } else {
       console.log("Validation failed. Please check the errors.");
@@ -241,10 +248,19 @@ const UserTab = ({ ordId }) => {
             </tbody>
           </table>
 
-          {users.length === 0 && (
-            <h3 className="w-full text-2xl my-6 text-center text-gray-600">
-              No users in this organization
-            </h3>
+          {isLoading ? (
+            <div className="w-full h-24">
+              <Loader />
+            </div>
+          ) : (
+            <>
+              {" "}
+              {users.length === 0 && (
+                <h3 className="w-full text-2xl my-6 text-center text-gray-600">
+                  No users in this organization
+                </h3>
+              )}{" "}
+            </>
           )}
         </div>
       </div>
@@ -257,6 +273,7 @@ const UserTab = ({ ordId }) => {
         }}
         title="add users"
         onSubmit={handleSubmit}
+        isSubmitting={isAddingUser}
       >
         <div className=" md:px-4 px-2 bg-white">
           {/* Name Input */}

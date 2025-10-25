@@ -9,6 +9,7 @@ import UserTab from "../components/UserTab";
 import Avatar from "../components/Avatar";
 import StatusBadge from "../components/StatusBadge";
 import { StatusConfig } from "../components/Organizations";
+import Loader from "../components/Loader";
 
 const OrganizationProfile = () => {
   const { id } = useParams();
@@ -20,6 +21,7 @@ const OrganizationProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [organization, setOrganization] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIssubmitting] = useState(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState(false);
   const [formData, setFormData] = useState({
     adminName: "",
@@ -143,6 +145,7 @@ const OrganizationProfile = () => {
 
     try {
       // Filter out empty fields
+      setIssubmitting(true);
       const updateData = Object.entries(formData).reduce(
         (acc, [key, value]) => {
           if (value !== "" && value !== null && value !== undefined) {
@@ -177,6 +180,8 @@ const OrganizationProfile = () => {
           },
         ]);
       }
+    } finally {
+      setIssubmitting(false);
     }
   };
   const getFieldError = (fieldName) => {
@@ -201,9 +206,11 @@ const OrganizationProfile = () => {
     });
     setIsEditing(false);
   };
-
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
   const handleStatusChange = async (newStatus) => {
     try {
+      setIsUpdatingStatus(true);
+      setShowStatusDropdown(false);
       const { data } = await axios.patch(`/org/status/${id}`, {
         status: newStatus,
       });
@@ -211,9 +218,10 @@ const OrganizationProfile = () => {
         ...prev,
         status: newStatus,
       }));
-      setShowStatusDropdown(false);
     } catch (error) {
       console.error("Error updating status:", error);
+    } finally {
+      setIsUpdatingStatus(false);
     }
   };
 
@@ -232,16 +240,31 @@ const OrganizationProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
+      <div>
+        <Navbar />
+        <div className="w-full md:px-10 px-3 mx-auto relative">
+          <Breadcrumb items={breadcrumbItems} />
+          <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-4">
+            <Loader />
+            <div className="text-gray-600 text-3xl font-semibold">
+              Loading...
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (!organization) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-red-600">Organization not found</div>
+      <div>
+        <Navbar />
+        <div className="w-full md:px-10 px-3 mx-auto relative">
+          <Breadcrumb items={breadcrumbItems} />
+          <div className="h-72 bg-gray-50 flex items-center justify-center">
+            <div className="text-red-600">Organization not found</div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -305,7 +328,7 @@ const OrganizationProfile = () => {
                   onClick={() => setShowStatusDropdown(!showStatusDropdown)}
                   className="text-[#6834FF] hover:bg-blue-50 px-3 py-1 rounded-lg cursor-pointer text-[12px] "
                 >
-                  Change status
+                  {isUpdatingStatus ? "Updating..." : "Change status"}
                   {/* <ChevronDown className="w-4 h-4" /> */}
                 </button>
 
@@ -377,6 +400,7 @@ const OrganizationProfile = () => {
                   setIsEditing={setIsEditing}
                   handleSubmit={handleSubmit}
                   hasFieldError={hasFieldError}
+                  isSubmitting={isSubmitting}
                   errors={errors}
                   getFieldError={getFieldError}
                 />
