@@ -11,10 +11,10 @@ app.use(cors());
 app.use(express.json());
 
 // just to test the loaders
-app.use(async (req, res, next) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  next();
-});
+// app.use(async (req, res, next) => {
+//   await new Promise((resolve) => setTimeout(resolve, 1000));
+//   next();
+// });
 app.get("/", (req, res) => res.send("Backend is running! 🚀"));
 
 app.use("/users", userRouter);
