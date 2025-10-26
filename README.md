@@ -10,12 +10,12 @@
 
 This document provides documentation for a simple REST API used to manage organizations and their associated users.
 
-The API is built using **Node.js**, **Express**, **Sequelize** (as the ORM), and **SQLite** (as the database).
+The API is built using **Node.js**, **Express**, **Sequelize** (as the ORM), and **Postgres** (as the database).
 
 ## Tech Stack
 
 - **Backend:** Node.js, Express.js
-- **Database:** SQLite
+- **Database:** Postgres
 - **ORM:** Sequelize
 
 <br/>
@@ -24,9 +24,9 @@ The API is built using **Node.js**, **Express**, **Sequelize** (as the ORM), and
 
 ## 💾 Database Setup
 
-This project uses **SQLite** for easy setup and portability.
+This project uses **PostgreSQL** as its database, hosted on [**Neon**](https://neon.tech/) (a serverless Postgres provider).
 
-When you run the application for the first time, Sequelize will automatically create a `database.sqlite` file in the `backend` directory. No manual database configuration is needed.
+Unlike SQLite, this setup requires a connection string to a remote database. You must add your Neon DB connection string as `DATABASE_URL` in the `backend/.env` file to connect the application.
 
 ---
 
@@ -59,12 +59,14 @@ You must have [Node.js](https://nodejs.org/) (which includes npm) installed on y
 
     - **Environment Variables:**
       The backend requires environment variables for image uploading to ImageKit. Create a `.env` file in the `backend` folder.
-      For quick testing, you can use these variables. **Please do not misuse them.**
+
       ```.env
-      IMAGEKIT_PRIVATE_KEY=private_mGJIrTqVWdPI2hSE3+mno/AKhAc=
-      IMAGEKIT_PUBLIC_KEY=public_eopj0cm2LX/+dr0m3LMSAcC84d4=
-      IMAGEKIT_URL_ENDPOINT=[https://ik.imagekit.io/roopesh/](https://ik.imagekit.io/roopesh/)
+      IMAGEKIT_PRIVATE_KEY=
+      IMAGEKIT_PUBLIC_KEY=
+      IMAGEKIT_URL_ENDPOINT=
+      DATABASE_URL=
       ```
+
     - **Run the backend server:**
       ```sh
       npm start
@@ -88,6 +90,16 @@ You must have [Node.js](https://nodejs.org/) (which includes npm) installed on y
       The React development server will start, usually on `http://localhost:5173`.
 
 ---
+
+### 💡 Connecting Frontend to Local Backend
+
+By default, the frontend application is configured to make API calls to the live, hosted backend.
+
+If you want to connect the frontend to your **local backend server** (running on `http://localhost:5000`), you must update the `baseURL` in the Axios configuration file located at `fronteend/axios/axios.js`.
+
+## <br/>
+
+<br/>
 
 ## ✨ Features
 
