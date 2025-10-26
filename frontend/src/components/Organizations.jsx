@@ -78,7 +78,7 @@ export default function B2BOrganizationsTable({
       {/* Table using CSS Grid */}
       <div className="w-full overflow-x-scroll">
         {/* Header Row */}
-        <div className="grid grid-cols-[80px_minmax(200px,1fr)_minmax(200px,1fr)_minmax(200px,200px)_minmax(120px,120px)] gap-4 border-b border-gray-200 px-3 py-1 bg-[#F5F6F7] min-w-[750px] ">
+        <div className="grid grid-cols-[80px_minmax(200px,1fr)_minmax(200px,1fr)_minmax(200px,200px)_minmax(120px,120px)] gap-4 border-b border-gray-200 px-3 py-1 bg-[#F5F6F7] min-w-[900px]  ">
           <div className="text-sm  text-[#232323] p-3">Sr. No</div>
           <div className="text-sm  text-[#232323] p-3">Organizations</div>
           <div className="text-sm  text-[#232323] p-3">Pending requests</div>
@@ -86,14 +86,14 @@ export default function B2BOrganizationsTable({
             Status
             <Filter className="w-4 h-4 text-gray-400" />
           </div>
-          <div className="text-sm  text-[#232323] p-3 bg-[#F5F6F7]">Action</div>
+          <div className="text-sm  text-[#232323] p-3 ">Action</div>
         </div>
 
         {/* Data Rows */}
         {organizations.map((org) => (
           <div
             key={org.id}
-            className="grid grid-cols-[80px_minmax(200px,1fr)_minmax(200px,1fr)_minmax(200px,200px)_minmax(120px,120px)] gap-4 items-center py-3 px-3 border-b border-gray-100 hover:bg-gray-50 transition relative  text-[#232323]"
+            className="grid min-w-[900px] grid-cols-[80px_minmax(200px,1fr)_minmax(200px,1fr)_minmax(200px,200px)_minmax(120px,120px)] gap-4 items-center py-3 px-3 border-b border-gray-100 hover:bg-gray-50 transition relative  text-[#232323]"
             onMouseEnter={() => setHoveredRow(org.id)}
             onMouseLeave={() => setHoveredRow(null)}
           >
